@@ -35,6 +35,9 @@ inputs:
   docker_prune:
     description: A boolean input to trigger docker prune command.
     required: false
+  pre_deployment_command:
+    description: Command that will be executed before deploy
+    required: false
   pre_deployment_command_args:
     description: The args for the pre deploument command.
     required: false

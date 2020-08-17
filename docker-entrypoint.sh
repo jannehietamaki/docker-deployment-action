@@ -100,6 +100,10 @@ if ! [ -z "$INPUT_COPY_STACK_FILE" ] && [ $INPUT_COPY_STACK_FILE = 'true' ] ; th
   execute_ssh "ln -nfs $INPUT_DEPLOY_PATH/stacks/$FILE_NAME $INPUT_DEPLOY_PATH/stack.yaml"
   execute_ssh "ls -t $INPUT_DEPLOY_PATH/stacks/docker-stack-* 2>/dev/null |  tail -n +$INPUT_KEEP_FILES | xargs rm --  2>/dev/null || true"
 
+  if ! [ -z "$INPUT_PRE_DEPLOYMENT_COMMAND" ] ; then
+    execute_ssh "${PRE_DEPLOYMENT_COMMAND}" 2>&1
+  fi
+
   if ! [ -z "$INPUT_PULL_IMAGES_FIRST" ] && [ $INPUT_PULL_IMAGES_FIRST = 'true' ] && [ $INPUT_DEPLOYMENT_MODE = 'docker-compose' ] ; then
     execute_ssh "${DEPLOYMENT_COMMAND} pull"
   fi
