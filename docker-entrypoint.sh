@@ -82,7 +82,7 @@ eval $(ssh-agent)
 ssh-add "$HOME/.ssh/id_rsa"
 
 echo "Add known hosts"
-printf '[%s]:%s %s\n' "$SSH_HOST "$SSH_PORT" "$INPUT_SSH_PUBLIC_KEY" > /etc/ssh/ssh_known_hosts
+printf '[%s]:%s %s\n' "$SSH_HOST" "$SSH_PORT" "$INPUT_SSH_PUBLIC_KEY" > /etc/ssh/ssh_known_hosts
 
 if ! [ -z "$INPUT_DOCKER_PRUNE" ] && [ $INPUT_DOCKER_PRUNE = 'true' ] ; then
   yes | docker --log-level debug --host "ssh://$INPUT_REMOTE_DOCKER_HOST:$SSH_PORT" system prune -a 2>&1
