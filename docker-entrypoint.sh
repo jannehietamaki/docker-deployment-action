@@ -1,9 +1,10 @@
 #!/bin/sh
 set -eu
 
-SSH_PORT = 22
+SSH_PORT=$INPUT_SSH_PORT
+
 if [ -z "$INPUT_SSH_PORT" ]; then
-  SSH_PORT = $INPUT_SSH_PORT
+  SSH_PORT=22
 fi
 
 execute_ssh(){
