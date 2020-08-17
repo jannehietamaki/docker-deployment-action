@@ -1,9 +1,14 @@
 #!/bin/sh
 set -eu
 
+SSH_PORT = 22
+if [ -z "$INPUT_SSH_PORT" ]; then
+  SSH_PORT = $INPUT_SSH_PORT
+fi
+
 execute_ssh(){
   echo "Execute Over SSH: $@"
-  ssh -q -t -i "$HOME/.ssh/id_rsa" \
+  ssh -q -t -i "$HOME/.ssh/id_rsa" -p $SSH_PORT \
       -o UserKnownHostsFile=/dev/null \
       -o StrictHostKeyChecking=no "$INPUT_REMOTE_DOCKER_HOST" "$@"
 }
@@ -86,7 +91,7 @@ if ! [ -z "$INPUT_COPY_STACK_FILE" ] && [ $INPUT_COPY_STACK_FILE = 'true' ] ; th
   execute_ssh "mkdir -p $INPUT_DEPLOY_PATH/stacks || true"
   FILE_NAME="docker-stack-$(date +%Y%m%d%s).yaml"
 
-  scp -i "$HOME/.ssh/id_rsa" \
+  scp -i "$HOME/.ssh/id_rsa" -P $SSH_PORT \
       -o UserKnownHostsFile=/dev/null \
       -o StrictHostKeyChecking=no \
       $INPUT_STACK_FILE_NAME "$INPUT_REMOTE_DOCKER_HOST:$INPUT_DEPLOY_PATH/stacks/$FILE_NAME"
